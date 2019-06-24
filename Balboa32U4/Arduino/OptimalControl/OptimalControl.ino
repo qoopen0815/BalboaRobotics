@@ -1,13 +1,10 @@
 #include <Wire.h>
 #include <Balboa32U4.h>
-#include <MadgwickAHRS.h>
 #include "Conversion.h"
-#include "Kalman.h"
 
 #define Ts 10.0  //周期Ts [ms]
 #define Voffset 0.3768  //オフセット電圧 [V]
 
-Madgwick MF;
 Balboa32U4Encoders encoders;
 Balboa32U4Motors motors;
 
@@ -34,23 +31,11 @@ float input(float phi_p, float phi_p_dot, float phi_w, float phi_w_dot)
   return u * 300.0 / 5.5;
 }
 
-void setupMF(void)
-{
-  MF.begin(40); //cycle time
-}
-
-void updateMF(void)
-{
-  updateIMU();
-  MF.update(gx, gy, gz, ax, ay, az, mx, my, mz);
-}
-
 void setup()
 {
   Serial.begin(38400);
   Wire.begin();
   setupIMU();
-  setupKF();
 }
 
 void loop()
@@ -79,20 +64,9 @@ void loop()
   /* ------------ 状態変数更新(n-1)------------ */
   phi_w_old = phi_w;
 
-  //  Serial.print(millis());
-  //  Serial.print("\t");
-  //  Serial.print(deg2rad(phi_p));
-  //  Serial.print("\t");
-  //  Serial.print(deg2rad(phi_p_dot));
-  //  Serial.print("\t");
-  //  Serial.print(deg2rad(phi_w));
-  //  Serial.print("\t");
-  //  Serial.print(deg2rad(phi_w_dot));
-  //  Serial.print("\t");
   //  Serial.print(inputVal);
   //  Serial.print("\t");
   //  Serial.println((inputVal + inputVal_old) / 2.0);
-
 
   goalTime = millis();
   delay(Ts - (goalTime - startTime));

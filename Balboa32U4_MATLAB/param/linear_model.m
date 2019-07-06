@@ -17,14 +17,12 @@ sys_B = [0;
          (-a12*n*k_t/R)/delta;
          0;
          (a11*n*k_t/R)/delta];
-sys_C = diag([0 1 1 0]);
-sys_D = [0; 0; 0; 0];
+sys_C = [0 1 1 0];
+sys_D = 0;
 
 % 離散化
 syms Ts real
 Ts = 0.01; % [sec]
-% sys_Ad = eye(4) + sys_A * Ts;
-% sys_Bd = sys_B * Ts;
 [sys_Ad, sys_Bd] = c2d(sys_A, sys_B, Ts);
 
 % 状態空間表現（連続系）
@@ -33,4 +31,3 @@ sys = ss(sys_A, sys_B, sys_C, sys_D);
 sysd = ss(sys_Ad, sys_Bd, sys_C, sys_D, Ts);
 % 状態空間表現から伝達関数表現（零点/極/ゲイン型）へ
 zpk = zpk(sys);
-% zpkd = zpk(sysd)

@@ -15,7 +15,7 @@ static unsigned long startTime = 0;
 static unsigned long goalTime = 0;
 static unsigned long processTime = 0;
 
-float input(float phi_p, float phi_p_dot, float phi_w, float phi_w_dot)
+int input(float phi_p, float phi_p_dot, float phi_w, float phi_w_dot)
 {
   float K[4] = {7.6344,  1.2947,  0.2309, 0.7571};
   float X[4] = {phi_p, phi_p_dot, phi_w, phi_w_dot};

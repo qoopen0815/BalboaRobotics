@@ -2,7 +2,8 @@ clear
 balboa_param;
 linear_model;
 
-L = [0.25; 0.75; -0.15; 0.35];
+q = [1/2 1/1.5 1 1/3];
+L = place(sys_Ad',sys_C',q).';
 
 % LQR optimization
 Q = diag([10 1 1 1]);

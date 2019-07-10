@@ -1,11 +1,17 @@
 #pragma once
-#include "include/matrix.h"
+#include "matrix.h"
 
 class Observer
 {
+    double A[4][4] = {
+        {1,1,1,1},
+        {1,1,1,1},
+        {1,1,1,1},
+        {1,1,1,1}
+    };
+
 public:
     Observer(void); // constructor
-
     void updateState(void); 
 
 private:

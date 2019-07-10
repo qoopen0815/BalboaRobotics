@@ -1,32 +1,38 @@
 class Matrix
 {
-    public: 
-        int row;  //行
-        int col;  //列
-        double** p_top; //配列の最初を指すポインタ
+public: 
+    int row;  //行
+    int col;  //列
+    double** p_top; //配列の最初を指すポインタ
 
-    public:
-        Matrix(int i=1, int j=1);//コンストラクタ
-        Matrix(const Matrix &cp);//コピーコンストラクタ
+public:
+    // コンストラクタ
+    Matrix(int i=1, int j=1);
+    // コピーコンストラクタ
+    Matrix(const Matrix &cp);
+    // デストラクタ
+    ~Matrix();
 
-        ~Matrix();//デストラクタ
+    int row_size(){return(row);}
+    int col_size(){return(col);}
 
-        int row_size(){return(row);}
-        int col_size(){return(col);}
+    // 行列要素の初期化
+    void Matrix::convertMatrix(double **target, Matrix *output);
 
-        void change_size(int i, int j);//サイズ変更
+    // リサイズ
+    void change_size(int i, int j);
 
-        //演算子オーバーロード
-        double* &operator[](int i){ return(p_top[i]); }
-        Matrix operator=(const Matrix &a);
-        Matrix operator+(const Matrix &a);
-        Matrix operator-(const Matrix &a);
-        Matrix operator*(const Matrix &a);
+    //演算子オーバーロード
+    double* &operator[](int i){return(p_top[i]);}
+    Matrix operator=(const Matrix &a); // 代入
+    Matrix operator+(const Matrix &a); // 加算
+    Matrix operator-(const Matrix &a); // 減算
+    Matrix operator*(const Matrix &a); // 乗算
+    friend Matrix operator*(const Matrix &a, double b); // 乗算(pattern1)
+    friend Matrix operator*(double b, const Matrix &a); // 乗算(pattern2)
 
-        friend Matrix operator*(const Matrix &a, double b);
-        friend Matrix operator*(double b, const Matrix &a);
-
-        //行列変換
-        void unit_matrix();//単位行列
-        Matrix transposed();//転置行列
+    //単位行列
+    void unit_matrix();
+    //転置行列
+    Matrix transposed();
 };

@@ -1,9 +1,6 @@
 #pragma once
 #include "matrix.h"
 
-//---------------------------------
-//     通常のコンストラクタ
-//---------------------------------
 Matrix::Matrix(int i, int j)
 {
     row = i;
@@ -27,9 +24,6 @@ Matrix::Matrix(int i, int j)
     }
 }
 
-//---------------------------------
-//     コピーコンストラクタ
-//---------------------------------
 Matrix::Matrix(const Matrix &cp)
 {
     row = cp.row;
@@ -53,18 +47,33 @@ Matrix::Matrix(const Matrix &cp)
     }
 }
 
-//----------------------
-//   デストラクタ
-//----------------------
 Matrix::~Matrix()
 {
     delete [] *p_top; 
     delete [] p_top;
 }
 
-//------------------------------
-//   行列の大きさを変える  値は０
-//------------------------------
+void Matrix::convertMatrix(double **target, Matrix *output)
+{
+    int row = sizeof(target)/sizeof(*target);
+    int col = sizeof(*target)/sizeof(**target);
+
+    Matrix mat(row, col);
+
+    for(int i=1; i<=row; i++)
+    {
+        for(int j=1; j<=col; j++)
+        {
+            mat[i][j] = target[i][j];
+        }
+    }
+
+    output -> change_size(row, col);
+    *output = mat;
+
+    return;
+}
+
 void Matrix::change_size(int i, int j)
 {
     //  i,j のチェック
@@ -98,9 +107,6 @@ void Matrix::change_size(int i, int j)
     }
 }
 
-//------------------------------------
-//     代入
-//------------------------------------
 Matrix Matrix::operator=(const Matrix &a)
 {
     if( row != a.row || col != a.col )
@@ -118,9 +124,6 @@ Matrix Matrix::operator=(const Matrix &a)
     return(*this);
 }
 
-//------------------------------------
-//       行列の加算
-//------------------------------------
 Matrix Matrix::operator+(const Matrix &a)
 {
     if( row != a.row || col != a.col )
@@ -140,9 +143,6 @@ Matrix Matrix::operator+(const Matrix &a)
     return(r);
 }
 
-//------------------------------------
-//       行列の減算
-//------------------------------------
 Matrix Matrix::operator-(const Matrix &a)
 {
     if( row != a.row || col != a.col )
@@ -162,9 +162,6 @@ Matrix Matrix::operator-(const Matrix &a)
     return(r);
 }
 
-//------------------------------------
-//       行列の積
-//------------------------------------
 Matrix Matrix::operator*(const Matrix &a)
 {
     if( col != a.row )
@@ -187,9 +184,6 @@ Matrix Matrix::operator*(const Matrix &a)
     return(r);
 }
 
-//--------------------------------------
-//       行列の定数倍
-//--------------------------------------
 Matrix operator*(const Matrix &a, double b)
 {
     Matrix r(a.row, a.col);
@@ -215,9 +209,6 @@ Matrix operator*(double b, const Matrix &a)
     return(r);
 }
 
-//----------------------------------------
-//  単位行列にする
-//----------------------------------------
 void Matrix::unit_matrix()
 {
     if(row != col)
@@ -239,9 +230,6 @@ void Matrix::unit_matrix()
 
 }
 
-//----------------------------------------
-//  転置行列をかえす
-//----------------------------------------
 Matrix Matrix::transposed()
 {
     Matrix t(col, row);

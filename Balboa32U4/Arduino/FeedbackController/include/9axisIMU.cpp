@@ -5,7 +5,7 @@ void setupLIS3MDL(void)
     if (!mag.init())
     {
         // Failed to detect the LIS3MDL.
-        ledRed(1);
+        // ledRed(1);
         while(1)
         {
             Serial.println(F("Failed to detect the LIS3MDL."));
@@ -22,7 +22,7 @@ void setupLSM6(void)
     if (!imu.init())
     {
         // Failed to detect the LSM6.
-        ledRed(1);
+        // ledRed(1);
         while(1)
         {
             Serial.println(F("Failed to detect the LSM6."));

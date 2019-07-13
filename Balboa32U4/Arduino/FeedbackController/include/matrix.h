@@ -1,38 +1,24 @@
-class Matrix
-{
-public: 
-    int row;  //行
-    int col;  //列
-    double** p_top; //配列の最初を指すポインタ
+#pragma once
+#include <vector>
 
+class MatrixFunction
+{    
 public:
-    // コンストラクタ
-    Matrix(int i=1, int j=1);
-    // コピーコンストラクタ
-    Matrix(const Matrix &cp);
-    // デストラクタ
-    ~Matrix();
+    // Matrix addition
+    std::vector<std::vector<float>> mat_add(std::vector<std::vector<float>> mat1, std::vector<std::vector<float>> mat2);
 
-    int row_size(){return(row);}
-    int col_size(){return(col);}
+    // Matrix subtraction
+    std::vector<std::vector<float>> mat_sub(std::vector<std::vector<float>> mat1, std::vector<std::vector<float>> mat2);
 
-    // 行列要素の初期化
-    void Matrix::convertMatrix(double **target, Matrix *output);
+    // Matrix multiplication
+    std::vector<std::vector<float>> mat_mul(std::vector<std::vector<float>> mat1, std::vector<std::vector<float>> mat2);
 
-    // リサイズ
-    void change_size(int i, int j);
+    // Matrix scaler multiplication
+    std::vector<std::vector<float>> mat_mul_const(const float c, std::vector<std::vector<float>> mat);
 
-    //演算子オーバーロード
-    double* &operator[](int i){return(p_top[i]);}
-    Matrix operator=(const Matrix &a); // 代入
-    Matrix operator+(const Matrix &a); // 加算
-    Matrix operator-(const Matrix &a); // 減算
-    Matrix operator*(const Matrix &a); // 乗算
-    friend Matrix operator*(const Matrix &a, double b); // 乗算(pattern1)
-    friend Matrix operator*(double b, const Matrix &a); // 乗算(pattern2)
-
-    //単位行列
-    void unit_matrix();
-    //転置行列
-    Matrix transposed();
+    // Matrix transposition
+    std::vector<std::vector<float>> mat_trans(std::vector<std::vector<float>> mat);
+    
+    // Matrix inversion (by Gaussian elimination)
+    // std::vector<std::vector<float>> mat_inv(std::vector<std::vector<float>> mat);
 };

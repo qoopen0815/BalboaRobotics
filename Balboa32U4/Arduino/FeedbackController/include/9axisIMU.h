@@ -1,3 +1,4 @@
+#pragma once
 #include <LSM6.h>
 #include <LIS3MDL.h>
 

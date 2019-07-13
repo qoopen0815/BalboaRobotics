@@ -1,246 +1,115 @@
-#pragma once
 #include "matrix.h"
 
-Matrix::Matrix(int i, int j)
+// Matrix addition
+std::vector<std::vector<float>> MatrixFunction::mat_add(std::vector<std::vector<float>> mat1, std::vector<std::vector<float>> mat2)
 {
-    row = i;
-    col = j;
+    std::vector<std::vector<float>> result(mat1.size(), std::vector<float>(mat1[0].size(), 0));
 
-    //  配列のメモリ領域を動的に確保
-    p_top = new double*[row+1];
-    *p_top = new double[row*col+1]; 
-    for(int k=1; k<=row; k++)
+    if (mat1.size() == mat2.size())
     {
-        *(p_top+k) = *p_top+((k-1)*col);
-    }
-
-    //  値の初期化
-    for(int k1=1; k1<=row; k1++)
-    {
-        for(int k2=1; k2<=col; k2++)
+        if (mat1[0].size() == mat2[0].size())
         {
-            p_top[k1][k2] = 0;
-        }
-    }
-}
+            float row = result.size();
+            float col = result[0].size();
 
-Matrix::Matrix(const Matrix &cp)
-{
-    row = cp.row;
-    col = cp.col;
-
-    // 配列のメモリ領域を動的に確保
-    p_top = new double*[row+1];
-    *p_top = new double[row*col+1]; 
-    for(int k=1; k<=row; k++)
-    { 
-        *(p_top+k) = *p_top+((k-1)*col);
-    }
-
-    // 値のコピー
-    for(int k1=1; k1<=row; k1++)
-    {
-        for(int k2=1; k2<=col; k2++)
-        {
-            p_top[k1][k2] = cp.p_top[k1][k2];
-        }
-    }
-}
-
-Matrix::~Matrix()
-{
-    delete [] *p_top; 
-    delete [] p_top;
-}
-
-void Matrix::convertMatrix(double **target, Matrix *output)
-{
-    int row = sizeof(target)/sizeof(*target);
-    int col = sizeof(*target)/sizeof(**target);
-
-    Matrix mat(row, col);
-
-    for(int i=1; i<=row; i++)
-    {
-        for(int j=1; j<=col; j++)
-        {
-            mat[i][j] = target[i][j];
-        }
-    }
-
-    output -> change_size(row, col);
-    *output = mat;
-
-    return;
-}
-
-void Matrix::change_size(int i, int j)
-{
-    //  i,j のチェック
-    if( i<1 || j<1 )
-    {
-        // Serial.println(F("err Matrix::change_size"));
-        // delay(100);
-    }
-
-    delete [] *p_top; 
-    delete [] p_top;
-
-    row = i;
-    col = j;
-
-    //  配列のメモリ領域を動的に確保
-    p_top = new double*[row+1];
-    *p_top = new double[row*col+1]; 
-    for(int k=1; k<=row; k++)
-    {
-        *(p_top+k) = *p_top+((k-1)*col);
-    }
-
-    //  値の初期化
-    for(int k1=1; k1<=row; k1++)
-    {
-        for(int k2=1; k2<=col; k2++)
-        {
-            p_top[k1][k2] = 0;
-        }
-    }
-}
-
-Matrix Matrix::operator=(const Matrix &a)
-{
-    if( row != a.row || col != a.col )
-    {
-        change_size(a.row, a.col);
-    }
-
-    for(int i=1; i<=row; i++)
-    {
-        for(int j=1; j<=col; j++)
-        {
-            p_top[i][j] = a.p_top[i][j];
-        }
-    }
-    return(*this);
-}
-
-Matrix Matrix::operator+(const Matrix &a)
-{
-    if( row != a.row || col != a.col )
-    {
-        // Serial.println(F("err Matrix::operator+ not equal matrix size"));
-        // delay(100);
-    }
-
-    Matrix r(row, col);
-    for(int i=1; i<=row; i++)
-    {
-        for(int j=1; j<=col; j++)
-        {
-            r.p_top[i][j] = p_top[i][j] + a.p_top[i][j];
-        }
-    }
-    return(r);
-}
-
-Matrix Matrix::operator-(const Matrix &a)
-{
-    if( row != a.row || col != a.col )
-    {
-        // Serial.println(F("err Matrix::operator- not equal matrix size"));
-        // delay(100);
-    }
-
-    Matrix r(row, col);
-    for(int i=1; i<=row; i++)
-    {
-        for(int j=1; j<=col; j++)
-        {
-            r.p_top[i][j] = p_top[i][j] - a.p_top[i][j];
-        }
-    }
-    return(r);
-}
-
-Matrix Matrix::operator*(const Matrix &a)
-{
-    if( col != a.row )
-    {
-        // Serial.println(F("err Matrix::operator* not equal matrix size"));
-        // delay(100);
-    }
-
-    Matrix r(row, a.col);
-    for(int i=1; i<=row; i++)
-    {
-        for(int j=1; j<=a.col; j++)
-        {
-            for(int k=1; k<=col; k++)
+            for (float i = 0; i < row; i++)
             {
-                r.p_top[i][j] += p_top[i][k] * a.p_top[k][j];
+                for (float j = 0; j < col; j++)
+                {
+                    result[i][j] = mat1[i][j] + mat2[i][j];    
+                }    
             }
         }
     }
-    return(r);
+
+    return result;
 }
 
-Matrix operator*(const Matrix &a, double b)
+// Matrix subtraction
+std::vector<std::vector<float>> MatrixFunction::mat_sub(std::vector<std::vector<float>> mat1, std::vector<std::vector<float>> mat2)
 {
-    Matrix r(a.row, a.col);
-    for(int i=1; i<=a.row; i++)
-    {
-        for(int j=1; j<=a.col; j++)
-        {
-            r[i][j] = b * a.p_top[i][j];
-        }
-    }
-    return(r);
-}
-Matrix operator*(double b, const Matrix &a)
-{
-    Matrix r(a.row, a.col);
-    for(int i=1; i<=a.row; i++)
-    {
-        for(int j=1; j<=a.col; j++)
-        {
-            r[i][j] = b * a.p_top[i][j];
-        }
-    }
-    return(r);
-}
+    std::vector<std::vector<float>> result(mat1.size(), std::vector<float>(mat1[0].size(), 0));
 
-void Matrix::unit_matrix()
-{
-    if(row != col)
+    if (mat1.size() == mat2.size())
     {
-        // Serial.println(F("err in Matrix::unit_matrix()"));
-        // delay(100);
-    }
-
-    int n = row;
-    double** a = p_top;
-    for(int i=1; i<=n; i++)
-    {
-        for(int j=1; j<=n; j++)
+        if (mat1[0].size() == mat2[0].size())
         {
-            a[i][j] = 0;
-            if(i == j) a[i][j] = 1;
+            float row = result.size();
+            float col = result[0].size();
+
+            for (float i = 0; i < row; i++)
+            {
+                for (float j = 0; j < col; j++)
+                {
+                    result[i][j] = mat1[i][j] - mat2[i][j];    
+                }    
+            }
         }
     }
 
+    return result;
 }
 
-Matrix Matrix::transposed()
+// Matrix multiplication
+std::vector<std::vector<float>> MatrixFunction::mat_mul(std::vector<std::vector<float>> mat1, std::vector<std::vector<float>> mat2)
 {
-    Matrix t(col, row);
-    double** a = p_top;
+    std::vector<std::vector<float>> result(mat1.size(), std::vector<float>(mat2[0].size(), 0));
 
-    for(int i=1; i<=row; i++)
+    if (mat1[0].size() == mat2.size())
     {
-        for(int j=1; j<=col; j++)
+        float row = result.size();
+        float col = result[0].size();
+
+        for (float i = 0; i < row; i++)
         {
-            t[j][i] = a[i][j];
+            for (float j = 0; j < col; j++)
+            {
+                result[i][j] = 0;
+                for (float k = 0; k < mat1[0].size(); k++)
+                {
+                    result[i][j] += mat1[i][k] * mat2[k][j];
+                }
+            }
         }
     }
-    return(t);
+
+    return result;
+}
+
+// Matrix scaler multiplication
+std::vector<std::vector<float>> MatrixFunction::mat_mul_const(const float c, std::vector<std::vector<float>> mat)
+{
+    std::vector<std::vector<float>> result(mat.size(), std::vector<float>(mat[0].size(), 0));
+
+    float row = result.size();
+    float col = result[0].size();
+
+    for (float i = 0; i < row; i++)
+    {
+        for (float j = 0; j < col; j++)
+        {
+            result[i][j] = c * mat[i][j];
+        }
+    }
+
+    return result;
+}
+
+// Matrix transposition
+std::vector<std::vector<float>> MatrixFunction::mat_trans(std::vector<std::vector<float>> mat)
+{
+    std::vector<std::vector<float>> result(mat[0].size(), std::vector<float>(mat.size(), 0));
+
+    float row = result.size();
+    float col = result[0].size();
+
+    for (float i = 0; i < row; i++)
+    {
+        for (float j = 0; j < col; j++)
+        {
+            result[i][j] = mat[j][i];
+        }
+    }
+
+    return result;
 }

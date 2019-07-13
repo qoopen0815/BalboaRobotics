@@ -1,5 +1,4 @@
 #include <ArduinoSTL.h>
-#include <Balboa32U4.h>
 #include "matrix.h"
 
 MatrixFunction MatrixFunction;
@@ -29,9 +28,7 @@ std::vector<std::vector<float>> K = {
     {-6.79854685968737, -1.15197482996310, -0.0902797948869708, -0.687737467443920}
     };
 
-std::vector<std::vector<float>> estimatedState(std::vector<std::vector<float>> oldStateX, 
-                                                        std::vector<std::vector<float>> inputU, 
-                                                        std::vector<std::vector<float>> outputY)
+std::vector<std::vector<float>> estimatedState(std::vector<std::vector<float>> oldStateX, float inputU, float outputY)
 {
     std::vector<std::vector<float>> LC = MatrixFunction.mat_mul(L, C);
     std::vector<std::vector<float>> A_LC = MatrixFunction.mat_sub(sys_Ad, LC);
@@ -51,6 +48,5 @@ void setup()
 
 void loop()
 {
-
     delay(1000);
 }

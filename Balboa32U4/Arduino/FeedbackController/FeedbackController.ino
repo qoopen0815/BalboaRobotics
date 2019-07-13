@@ -1,5 +1,6 @@
 #include <Wire.h>
 #include <ArduinoSTL.h>
+#include <Balboa32U4.h>
 #include <LSM6.h>
 #include "matrix.h"
 
@@ -77,7 +78,7 @@ void updateIMU(void)
     imu.read();
 
     // 角速度値を分解能で割って角速度(degrees per sec)に変換する
-    gy = (imu.g.y-imu.cg.y) / 17.5;  // FS_G 500 dps => 57.1 LSB/dps [17.50 mdps/LSB]
+    gy = ((imu.g.y-imu.cg.y) * 17.5) * 0.001;  // FS_G 500 dps => 57.1 LSB/dps [17.50 mdps/LSB]
 }
 
 static unsigned long startTime = 0;

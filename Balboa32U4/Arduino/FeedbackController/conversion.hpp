@@ -1,5 +1,6 @@
-#include "conversion.h"
+#define PI 3.14159
 
+//convert encoder val to wheel deg
 float en2deg(float encoder)
 {
     /*
@@ -12,6 +13,7 @@ float en2deg(float encoder)
     return encoder * 360/1321.236;
 }
 
+//convert deg to rad
 float deg2rad(float deg)
 {
     float rad = deg * PI/180;
@@ -19,6 +21,7 @@ float deg2rad(float deg)
     return rad;
 }
 
+//convert rad to deg
 float rad2deg(float rad)
 {
     float deg = rad * 180/PI;

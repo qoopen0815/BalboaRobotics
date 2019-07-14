@@ -1,5 +1,7 @@
 #include "matrix.h"
 
+using matrix_function::MatrixFunction;
+
 // Matrix addition
 std::vector<std::vector<float>> MatrixFunction::mat_add(std::vector<std::vector<float>> mat1, std::vector<std::vector<float>> mat2)
 {

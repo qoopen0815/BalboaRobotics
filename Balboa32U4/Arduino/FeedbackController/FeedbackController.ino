@@ -3,10 +3,15 @@
 #include <Balboa32U4.h>
 #include <LSM6.h>
 #include "matrix.h"
+#include "conversion.h"
 
-const int Ts = 10.0;  //周期Ts [ms]
+const float Ts = 10.0;  //周期Ts [ms]
+const float Voffset = 0.3768;  //オフセット電圧 [V]
+const float Vmax = 6.45;  //最大入力電圧 [V]
 
 MatrixFunction MatrixFunction;
+Balboa32U4Encoders encoders;
+Balboa32U4Motors motors;
 LSM6 imu;
 float deg, gy;
 
@@ -33,6 +38,18 @@ std::vector<std::vector<float>> L = {
     };
 std::vector<std::vector<float>> K = {
     {-6.79854685968737, -1.15197482996310, -0.0902797948869708, -0.687737467443920}
+    };
+std::vector<std::vector<float>> current = {
+    {0.0},
+    {0.0},
+    {0.0},
+    {0.0}
+    };
+std::vector<std::vector<float>> old = {
+    {0.0},
+    {0.0},
+    {0.0},
+    {0.0}
     };
 
 std::vector<std::vector<float>> estimatedState(std::vector<std::vector<float>> oldStateX, float inputU, float outputY)
@@ -81,6 +98,21 @@ void updateIMU(void)
     gy = ((imu.g.y-imu.cg.y) * 17.5) * 0.001;  // FS_G 500 dps => 57.1 LSB/dps [17.50 mdps/LSB]
 }
 
+float input(float phi_p, float phi_p_dot, float phi_w, float phi_w_dot)
+{
+    float X[4] = {phi_p, phi_p_dot, phi_w, phi_w_dot};
+
+    float u = (K[0][0] * X[0] + K[0][1] * X[1] + K[0][2] * X[2] + K[0][3] * X[3]);
+    /*
+        状態フィードバックコントローラ
+        u = K * x
+    */
+
+    u += Voffset * u/abs(u);
+
+    return u;
+}
+
 static unsigned long startTime = 0;
 static unsigned long goalTime = 0;
 static unsigned long processTime = 0;
@@ -95,13 +127,27 @@ void setup()
     gy = 0;
 }
 
+float y = 0;
+float oldY = 0;
+float u = 0;
+float oldU = 0;
+
 void loop()
 {
     startTime = millis();
 
     updateIMU();
-    deg += gy * Ts / 1000;
-    Serial.println(deg);
+    float phi_w = en2deg(encoders.getCountsLeft());
+    y = deg2rad(gy) + deg2rad(phi_w);
+    std::vector<std::vector<float>> current = estimatedState(old, oldU, oldY);
+    u = input(current[0][0], current[1][0], current[2][0], current[3][0]);
+    
+    motors.setLeftSpeed(u*300.0/Vmax);
+    motors.setRightSpeed(u*300.0/Vmax);
+
+    oldY = y;
+    oldU = u;
+    std::vector<std::vector<float>> old = current;
 
     goalTime = millis();
     delay(Ts - (goalTime - startTime));

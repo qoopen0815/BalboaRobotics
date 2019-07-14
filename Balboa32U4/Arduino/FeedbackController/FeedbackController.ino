@@ -70,7 +70,7 @@ void setupLSM6(void)
     if (!imu.init())
     {
         // Failed to detect the LSM6.
-        // ledRed(1);
+        ledRed(1);
         while(1)
         {
             Serial.println(F("Failed to detect the LSM6."));

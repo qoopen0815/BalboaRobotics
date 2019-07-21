@@ -2,19 +2,19 @@
 Arduino code for [Balboa32U4](https://www.pololu.com/docs/0J70)
 
 ## Sensor
-- [Attitude Estimation](https://github.com/calm0815/Balboa32U4-arduino/tree/master/AttitudeEstimation)  
+- [Attitude Estimation](https://github.com/calm0815/BalboaRobotics/tree/master/Balboa32U4/Arduino/AttitudeEstimation)  
     - [LSM6 (6DoF IMU)](https://github.com/pololu/lsm6-arduino)
     - [LIS3MDL (3DoF Magnetic Sensor)](https://github.com/pololu/lis3mdl-arduino)
     - [MadgwickAHRS](https://github.com/arduino-libraries/MadgwickAHRS)
 
 ## Inverted pendulum
-- [identification](https://github.com/calm0815/Balboa32U4-arduino/tree/master/param_identification)
-    - [drive part](https://github.com/calm0815/Balboa32U4-arduino/blob/master/param_identification/drive_part/drive_part.ino)
+- [identification](https://github.com/calm0815/BalboaRobotics/tree/master/Balboa32U4/Arduino/param_identification)
+    - [applied_voltage](https://github.com/calm0815/BalboaRobotics/blob/master/Balboa32U4/Arduino/param_identification/applied_voltage/applied_voltage.ino)  
+    指令値('setSpeeds()')が最大のときの電圧を調べるため
 
-- [PID control](https://github.com/calm0815/Balboa32U4-arduino/tree/master/PIDcontrol)  
-editting ...
+- [FeedbackController](https://github.com/calm0815/BalboaRobotics/blob/master/Balboa32U4/Arduino/FeedbackController/FeedbackController.ino)  
+using observer
 
-- [OptimalControl](https://github.com/calm0815/Balboa32U4-arduino/tree/master/OptimalControl)  
-editting ...
-
-    - [MATLAB](https://github.com/calm0815/Balboa32U4-MATLAB/tree/master/FeedbackController/OptimalControl)
+## Dependency
+- [BasicLinearAlgebra](https://github.com/tomstewart89/BasicLinearAlgebra)
+- [StateSpaceControl](https://github.com/tomstewart89/StateSpaceControl)

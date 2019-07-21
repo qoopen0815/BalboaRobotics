@@ -2,23 +2,29 @@ clear
 balboa_param;
 
 % ïœêî
-a11 = (m_w + m_p)*power(r_w, 2) + 2*m_p*r_w*r_p + m_p*power(r_p, 2) + I_p + I_w;
-a12 = (m_w + m_p)*power(r_w, 2) + m_p*r_w*r_p + I_w;
-a21 = (m_w + m_p)*power(r_w, 2) + m_p*r_w*r_p + I_w;
-a22 = (m_w + m_p)*power(r_w, 2) + I_w + power(n, 2)*I_m;
+a11 = (m_w + m_p)*r_w*r_w + 2*m_p*r_w*r_p + m_p*r_p*r_p + I_p + I_w;
+a12 = (m_w + m_p)*r_w*r_w + m_p*r_w*r_p + I_w;
+a21 = (m_w + m_p)*r_w*r_w + m_p*r_w*r_p + I_w;
+a22 = (m_w + m_p)*r_w*r_w + I_w + n*n*I_m;
 delta = a11*a22 - a12*a21;
 
 % èÛë‘ï˚íˆéÆÅiòAë±ånÅj
 sys_A = [0 1 0 0;
-         (a22*m_p*g*r_p)/delta 0 0 (a12*power(n, 2)*k_t*k_b/R)/delta;
+         (a22*m_p*g*r_p)/delta 0 0 (a12*n*n*k_t*k_b/R)/delta;
          0 0 0 1;
-         (-a21*m_p*g*r_p)/delta 0 0 (-a11*power(n, 2)*k_t*k_b/R)/delta];
+         (-a21*m_p*g*r_p)/delta 0 0 (-a11*n*n*k_t*k_b/R)/delta];
 sys_B = [0;
          (-a12*n*k_t/R)/delta;
          0;
          (a11*n*k_t/R)/delta];
-sys_C = [0 1 1 0];
-sys_D = 0;
+sys_C = [0 0 0 0;
+         0 1 0 0;
+         0 0 1 0;
+         0 0 0 0];
+sys_D = [0;
+         0;
+         0;
+         0];
 
 % ó£éUâª
 syms Ts real

@@ -13,6 +13,12 @@ float en2deg(float encoder)
     return encoder * 360/1321.236;
 }
 
+//convert encoder val to wheel rad
+float en2rad(float encoder)
+{
+    return encoder * PI/1321.236;
+}
+
 //convert deg to rad
 float deg2rad(float deg)
 {

@@ -17,6 +17,5 @@ void setup()
 void loop()
 {
   int speed = 300;
-  motors.setLeftSpeed(speed);
-  motors.setRightSpeed(speed);
+  motors.setSpeeds(speed,speed);
 }

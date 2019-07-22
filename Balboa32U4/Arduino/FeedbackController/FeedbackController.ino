@@ -7,7 +7,7 @@
 
 using namespace BLA;
 
-struct Balboa32U4Model : public Model<4,1,1>
+struct Balboa32U4Model : public Model<4,1,4>
 {
     Balboa32U4Model(void)
     {
@@ -21,9 +21,12 @@ struct Balboa32U4Model : public Model<4,1,1>
             0.0161264775768699,
             2.49680336732252;
 
-        C<< 0, 1, 1, 0;
+        C<< 0, 0, 0, 0
+            0, 1, 0, 0
+            0, 0, 1, 0
+            0, 0, 0, 0;
 
-        D = Zeros<1,1>();
+        D = Zeros<4,1>();
     }
 };
 

@@ -3,7 +3,8 @@ Arduino code for [Balboa32U4](https://www.pololu.com/docs/0J70)
 
 ## Sensor
 - [Attitude Estimation](https://github.com/calm0815/BalboaRobotics/tree/master/Balboa32U4/Arduino/AttitudeEstimation)  
-    - [LSM6 (6DoF IMU)](https://github.com/pololu/lsm6-arduino)
+    - [LSM6 (6DoF IMU)](https://github.com/pololu/lsm6-arduino)  
+        I add new function, calibrateIMU(). Please download package from [lsm6-arduino](https://github.com/calm0815/lsm6-arduino)
     - [LIS3MDL (3DoF Magnetic Sensor)](https://github.com/pololu/lis3mdl-arduino)
     - [MadgwickAHRS](https://github.com/arduino-libraries/MadgwickAHRS)
 
